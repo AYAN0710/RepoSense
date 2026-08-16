@@ -5,6 +5,7 @@ langchain
 langchain-community
 langchain-core
 langchain-qdrant
+langchain-text-splitters
 
 pydantic
 pydantic-settings
