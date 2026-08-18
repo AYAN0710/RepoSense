@@ -6,6 +6,7 @@ langchain-community
 langchain-core
 langchain-qdrant
 langchain-text-splitters
+langchain-google-genai
 
 pydantic
 pydantic-settings
