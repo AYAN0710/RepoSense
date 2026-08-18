@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.config.settings import settings
 from app.api.routes.repository import router as repository_router
+from app.api.routes.search import router as search_router
 
 app=FastAPI(title=settings.app_name)
 
@@ -11,3 +12,4 @@ def check_health():
     }
     
 app.include_router(repository_router)
+app.include_router(search_router)
