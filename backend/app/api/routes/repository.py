@@ -3,7 +3,7 @@ from app.services.repository_service import save_repository,extract_repository
 from app.ingestion.file_scanner import scan_repository
 from app.ingestion.code_loader import load_code_files
 from app.chunking.code_chunker import chunk_code
-from app.embeddings.embedding_service import embed_documents
+
 from app.vectorstore.qdrant_service import create_collection,store_chunks
 
 router=APIRouter(prefix='/repositories',tags=['Repositories'])
@@ -24,8 +24,8 @@ async def upload_repository(file:UploadFile=File(...)):
         result["repository_id"]
     )
     chunks=chunk_code(documents)
-    vector_size=384
-    create_collection(vector_size)
+    
+    create_collection()
     qdrant_result=store_chunks(chunks)
     return {
         'repository_id':result["repository_id"],

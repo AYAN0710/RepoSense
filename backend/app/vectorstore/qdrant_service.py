@@ -12,11 +12,20 @@ client=QdrantClient(
     path=str(VECTOR_DB_PATH)
 )
 
-def create_collection(vector_size:int):
-    collections=client.get_collections().collections
-    collection_exists=any(
-        collection.name==settings.qdrant_collection for collection in collections
+def create_collection():
+    sample_embedding = embedding_model.embed_query(
+        "test code retrieval query"
     )
+
+    vector_size = len(sample_embedding)
+
+    collections = client.get_collections().collections
+
+    collection_exists = any(
+        collection.name == settings.qdrant_collection
+        for collection in collections
+    )
+
     if not collection_exists:
         client.create_collection(
             collection_name=settings.qdrant_collection,
@@ -25,6 +34,7 @@ def create_collection(vector_size:int):
                 distance=Distance.COSINE
             )
         )
+
     return settings.qdrant_collection
 
 def get_vector_store():
