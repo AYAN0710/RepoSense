@@ -1,6 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from app.llm.llm_service import llm
 from app.retrieval.semantic_search import search_code
+from app.schemas.chat_schemas import CodeAnswer
 
 prompt=ChatPromptTemplate.from_template(
      """
@@ -26,6 +27,8 @@ User Question:
 """
 )
 
+structured_llm=llm.with_structured_output(CodeAnswer)
+
 def ask_codebase(query:str,repository_id:str,top_k:int=5):
     results=search_code(
         query=query,
@@ -35,6 +38,7 @@ def ask_codebase(query:str,repository_id:str,top_k:int=5):
     if not results:
         return {
             "answer": "I couldn't find relevant information in the indexed repository.",
+            "confidence":0.0,
             "sources": []
         }
     context_parts=[]
@@ -43,6 +47,7 @@ def ask_codebase(query:str,repository_id:str,top_k:int=5):
             f"""
             File: {result["file_path"]}
             Chunk: {result["chunk_index"]}
+            Retrieval Score: {result["score"]}
             Code: {result["content"]}"""
         )
     context="\n".join(context_parts)
@@ -50,13 +55,15 @@ def ask_codebase(query:str,repository_id:str,top_k:int=5):
         "context":context,
         "question":query
     })
-    response = llm.invoke(messages)
+    response = structured_llm.invoke(messages)
     return {
-        "answer":response.content,
-        "sources":[
+        "answer": response.answer,
+        "confidence": response.confidence,
+        "sources": [
             {
                 "file_path": result["file_path"],
-                "chunk_index": result["chunk_index"]
+                "chunk_index": result["chunk_index"],
+                "score": result["score"]
             }
             for result in results
         ]
