@@ -21,10 +21,12 @@ def search_code(
 
     retrieved_documents = vector_store.similarity_search_with_score(
         query=query,
-        k=top_k,
+        k=15,
         filter=repository_filter
     )
 
+    retrieved_documents=retrieved_documents[:top_k]
+    
     results = []
 
     for document, score in retrieved_documents:
