@@ -9,6 +9,11 @@ class BugReport(BaseModel):
     explanation:str
     suggested_fix:str
     
+class BugAnalysis(BaseModel):
+    bugs: list[BugReport] = Field(
+        default_factory=list
+    )
+    
 class BugAnalysisResponse(BaseModel):
     repository_id:str
     query:str

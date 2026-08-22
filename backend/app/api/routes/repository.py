@@ -3,8 +3,12 @@ from app.services.repository_service import save_repository,extract_repository
 from app.ingestion.file_scanner import scan_repository
 from app.ingestion.code_loader import load_code_files
 from app.chunking.code_chunker import chunk_code
-
 from app.vectorstore.qdrant_service import create_collection,store_chunks
+from pydantic import BaseModel,HttpUrl
+from app.services.github_service import clone_repository
+
+class GitHubRepositoryRequest(BaseModel):
+    url:HttpUrl
 
 router=APIRouter(prefix='/repositories',tags=['Repositories'])
 
@@ -37,4 +41,23 @@ async def upload_repository(file:UploadFile=File(...)):
         # 'chunks':chunks,
         # 'files':files
         'vectors_stored':qdrant_result['vectors_stored']
+    }
+
+@router.post("/scan-url")
+async def scan_github_repository(request:GitHubRepositoryRequest):
+    result=clone_repository(str(request.url))
+    files=scan_repository(result["repository_path"])
+    documents=load_code_files(files,result["repository_id"])
+    chunks=chunk_code(documents)
+    create_collection()
+    qdrant_result=store_chunks(chunks)
+    
+    return {
+        "repository_id": result["repository_id"],
+        "repository_url": result["repository_url"],
+        "repository_path": result["repository_path"],
+        "total_files": len(files),
+        "total_documents": len(documents),
+        "total_chunks": len(chunks),
+        "vectors_stored": qdrant_result["vectors_stored"]
     }
