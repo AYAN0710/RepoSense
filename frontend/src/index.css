@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  /* Redefine Tailwind's slate color space with custom black-violet shades */
+  --color-slate-950: #050209; /* Deepest black-violet bg */
+  --color-slate-900: #0B0715; /* Lighter cards/sidebar */
+  --color-slate-850: #120C21; /* Card hovers */
+  --color-slate-800: #1C122D; /* Subtle borders */
+  --color-slate-700: #291B40; /* Stronger borders/lines */
+  --color-slate-600: #443163; /* Secondary dividers */
+  --color-slate-500: #7A6996; /* Muted subtext */
+  --color-slate-400: #A89ABF; /* Secondary text */
+  --color-slate-350: #BCB0D0;
+  --color-slate-300: #D0C7DF; /* Muted light text */
+  --color-slate-200: #EAE6F0; /* Primary light text */
+  --color-slate-100: #F6F4F9; /* Pure light text */
+
+  /* Redefine Tailwind's indigo color space with rich purple-violet shades */
+  --color-indigo-950: #190B30;
+  --color-indigo-900: #2E1259;
+  --color-indigo-850: #431E7C;
+  --color-indigo-800: #572A9F;
+  --color-indigo-600: #7C3AED; /* Accent buttons */
+  --color-indigo-500: #8B5CF6; /* Accent hover */
+  --color-indigo-400: #A78BFA; /* Accent text/icons */
+  --color-indigo-300: #C4B5FD;
+
+  /* Redefine custom theme names for flexibility */
+  --color-brand-bg: #050209;
+  --color-brand-card: #0B0715;
+  --color-brand-border: #1C122D;
+  --color-brand-accent: #8B5CF6;
+  --color-brand-accent-hover: #7C3AED;
+  --color-brand-text-muted: #A89ABF;
+  --color-brand-text-light: #F6F4F9;
+
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: #050209;
+  color: #EAE6F0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+/* Custom scrollbars for a premium dark-theme look */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(11, 7, 21, 0.3);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(168, 154, 191, 0.15);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 154, 191, 0.3);
+}
